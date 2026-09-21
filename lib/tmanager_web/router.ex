@@ -15,8 +15,9 @@ defmodule TodolistWeb.Router do
       get "/:id", TaskController, :show
       post "/", TaskController, :create
       put "/:id", TaskController, :update
-      delete, "/:id", TaskController, :delete
+      delete "/:id", TaskController, :delete
       get "/users/:idUser", TaskController, :get_tasks_by_user
+    end
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
