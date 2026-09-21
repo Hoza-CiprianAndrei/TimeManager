@@ -7,13 +7,12 @@
 # General application configuration
 import Config
 
-config :time_manager,
+config :tmanager,
   namespace: Todolist,
-  ecto_repos: [Todolist.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  ecto_repos: [Todolist.Repo]
 
-# Configure the endpoint
-config :time_manager, TodolistWeb.Endpoint,
+# Configures the endpoint
+config :tmanager, TodolistWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
@@ -21,41 +20,41 @@ config :time_manager, TodolistWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Todolist.PubSub,
-  live_view: [signing_salt: "nVeHriPN"]
+  live_view: [signing_salt: "l870gh7i"]
 
-# Configure the mailer
+# Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
 # locally. You can see the emails in your browser, at "/dev/mailbox".
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :time_manager, Todolist.Mailer, adapter: Swoosh.Adapters.Local
+config :tmanager, Todolist.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.25.4",
-  time_manager: [
+  version: "0.17.11",
+  default: [
     args:
-      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "4.3.0",
-  time_manager: [
+  version: "3.2.7",
+  default: [
     args: ~w(
-      --input=assets/css/app.css
-      --output=priv/static/assets/css/app.css
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
     ),
-    cd: Path.expand("..", __DIR__),
-    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+    cd: Path.expand("../assets", __DIR__)
   ]
 
-# Configure Elixir's Logger
-config :logger, :default_formatter,
+# Configures Elixir's Logger
+config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

@@ -1,11 +1,11 @@
 import Config
 
 # Configure your database
-config :time_manager, Todolist.Repo,
+config :tmanager, Todolist.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "time_manager_dev",
+  database: "tmanager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -14,19 +14,19 @@ config :time_manager, Todolist.Repo,
 # debugging and code reloading.
 #
 # The watchers configuration can be used to run external
-# watchers to your application. For example, we can use it
-# to bundle .js and .css sources.
-config :time_manager, TodolistWeb.Endpoint,
+# watchers to your application. For example, we use it
+# with esbuild to bundle .js and .css sources.
+config :tmanager, TodolistWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}],
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "2HlQgiMQm0Sxzdh9pZ3rnGmcS1JhOIVpjz9Dg4BohOgD5XdbCjkivHCviyPnPTKn",
+  secret_key_base: "odi7KJOtjk8wem0P/2h2M4YiAGVqboa/YjHOSOI12uGZ+tCmpFw552eqbQqZadXa",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:time_manager, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:time_manager, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -53,10 +53,10 @@ config :time_manager, TodolistWeb.Endpoint,
 # different ports.
 
 # Enable dev routes for dashboard and mailbox
-config :time_manager, dev_routes: true
+config :tmanager, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :default_formatter, format: "[$level] $message\n"
+config :logger, :console, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
