@@ -4,12 +4,16 @@ defmodule TodolistWeb.UserController do
     alias Todolist.Accounts.User
     alias Todolist.Repo
 
-    def index(conn, _param) do
-        users = Repo.all(User)
-        render(conn, :index, users: users)
+    def index(conn, %{"email" => Email, "username" => Username}) do
+        case Repo.get_by(User, email: Email, username: Username) do
+            nil ->
+                conn |> put_status(:not_found) |> json(%{error: "User not found"})
+            user ->
+                render(conn, :show, user: user)
+        end
     end
 
-    def show(conn, %{"id" => id}) do
+    def show(conn, %{"userID" => id}) do
         case Repo.get(User, id) do
             nil ->
                 conn |> put_status(:not_found) |> json(%{error: "User not found"})
@@ -29,7 +33,7 @@ defmodule TodolistWeb.UserController do
         end
     end
 
-    def update(conn, %{"id" => id, "user" => user_params}) do
+    def update(conn, %{"userID" => id, "user" => user_params}) do
         case Repo.get(User, id) do
             nil ->
                 conn |> put_status(:not_found) |> json(%{error: "User not found"})
@@ -45,7 +49,7 @@ defmodule TodolistWeb.UserController do
         end
     end
 
-    def delete(conn, %{"id" => id}) do
+    def delete(conn, %{"userID" => id}) do
         case Repo.get(User, id) do
             nil ->
                 conn |> put_status(:not_found) |> json(%{error: "User not found"})
