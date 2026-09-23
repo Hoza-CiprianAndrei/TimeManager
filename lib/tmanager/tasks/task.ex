@@ -12,7 +12,6 @@ defmodule Todolist.Tasks.Task do
     timestamps()
   end
 
-  @doc false
   def changeset(task, attrs) do
     task
     |> cast(attrs, [:title, :description, :status, :user_id])

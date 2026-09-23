@@ -4,40 +4,32 @@ defmodule TodolistWeb.ClockController do
   alias Todolist.TimeTracking
   alias Todolist.TimeTracking.Clock
 
-  action_fallback TodolistWeb.FallbackController
-
-  def index(conn, _params) do
-    clocks = TimeTracking.list_clocks()
-    render(conn, :index, clocks: clocks)
-  end
-
-  def create(conn, %{"clock" => clock_params}) do
-    with {:ok, %Clock{} = clock} <- TimeTracking.create_clock(clock_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/clocks/#{clock}")
-      |> render(:show, clock: clock)
+  def show(conn, %{"userID" => user_id}) do
+    case TimeTracking.get_last_clock_by_user(user_id) do
+      nil -> 
+        conn |> put_status(:not_found) |> json(%{error: "No clock found for this user"})
+      %Clock{} = clock ->
+        render(conn, :show, clock: clock)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    clock = TimeTracking.get_clock!(id)
-    render(conn, :show, clock: clock)
-  end
+  def create(conn, %{"userID" => user_id} = params) do
+    clock_params = Map.get(params,"clock", params)
 
-  def update(conn, %{"id" => id, "clock" => clock_params}) do
-    clock = TimeTracking.get_clock!(id)
-
-    with {:ok, %Clock{} = clock} <- TimeTracking.update_clock(clock, clock_params) do
-      render(conn, :show, clock: clock)
+    case TimeTracking.create_clock_for_user(user_id, clock_params) do
+      {:ok, %Clock{} = clock} ->
+        conn |> put_status(:created) |> render(:show, clock: clock)
+      
+      {:error, changeset} ->
+        conn |> put_status(:bad_request) |> json(%{errors: format_errors(changeset)})
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    clock = TimeTracking.get_clock!(id)
-
-    with {:ok, %Clock{}} <- TimeTracking.delete_clock(clock) do
-      send_resp(conn, :no_content, "")
-    end
+  defp format_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
+        opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
+      end)
+    end)
   end
 end

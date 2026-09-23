@@ -4,8 +4,8 @@ defmodule TodolistWeb.UserController do
     alias Todolist.Accounts.User
     alias Todolist.Repo
 
-    def index(conn, %{"email" => Email, "username" => Username}) do
-        case Repo.get_by(User, email: Email, username: Username) do
+    def index(conn, %{"email" => email, "username" => username}) do
+        case Repo.get_by(User, email: email, username: username) do
             nil ->
                 conn |> put_status(:not_found) |> json(%{error: "User not found"})
             user ->

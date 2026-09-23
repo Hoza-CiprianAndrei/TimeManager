@@ -3,7 +3,7 @@ defmodule TodolistWeb.WorkingTimeController do
 
     import Ecto.Query
     alias Todolist.Repo
-    alias Todolist.WorkingTimes.WorkingTime
+    alias Todolist.TimeTracking.WorkingTime
 
 
     def show(conn, %{"userID" => userid, "id" => id}) do
@@ -17,10 +17,10 @@ defmodule TodolistWeb.WorkingTimeController do
 
     def index(conn, %{"userID" => userid, "start" => start_time, "end" => end_time}) do
         query = from w in WorkingTime,
-                where: w.userID == ^userid, w.start >= ^start_time, w.end <= ^end_time,
+                where: w.user_id == ^userid and w.start >= ^start_time and w.end <= ^end_time,
                 order_by: [asc: w.start]
-        working_times = Repo.all(query)
-        render(conn, :index, working_time: working_time)
+        workingtimes = Repo.all(query)
+        render(conn, :index, workingtimes: workingtimes)
     end
 
   def create(conn, %{"userID" => user_id, "working_time" => working_time_params}) do
@@ -29,9 +29,7 @@ defmodule TodolistWeb.WorkingTimeController do
 
     case Repo.insert(changeset) do
       {:ok, working_time} ->
-        conn
-        |> put_status(:created)
-        |> render(:show, working_time: working_time)
+        conn |> put_status(:created) |> render(:show, working_time: working_time)
 
       {:error, changeset} ->
         conn |> put_status(:bad_request) |> json(%{errors: format_errors(changeset)})
@@ -74,3 +72,4 @@ defmodule TodolistWeb.WorkingTimeController do
       end)
     end)
   end
+end
