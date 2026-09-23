@@ -74,4 +74,3 @@ defmodule TodolistWeb.WorkingTimeController do
       end)
     end)
   end
-
