@@ -7,7 +7,7 @@ defmodule TodolistWeb.WorkingTimeController do
 
 
     def show(conn, %{"userID" => userid, "id" => id}) do
-        case Repo.get_by(WorkingTime, id : id, userID: userid) do
+        case Repo.get_by(WorkingTime, id: id, userID: userid) do
             nil ->
                 conn |> put_status(:not_found) |> json(%{error: "Working time not found for this user!"})
             working_time -> 
