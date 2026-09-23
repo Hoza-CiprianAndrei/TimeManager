@@ -3,9 +3,8 @@ defmodule Todolist.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :first_name, :string
-    field :last_name, :string
-    has_many :tasks, Todolist.Tasks.Task
+    field :username, :string
+    field :email, :string
 
     timestamps()
   end
@@ -13,7 +12,7 @@ defmodule Todolist.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:first_name, :last_name])
-    |> validate_required([:first_name, :last_name])
+    |> cast(attrs, [:username, :email])
+    |> validate_required([:username, :email])
   end
 end
