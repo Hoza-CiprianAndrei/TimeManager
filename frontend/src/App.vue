@@ -1,85 +1,78 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import User from './components/User.vue';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div id="app-container">
+    <header class="app-header">
+      <div class="logo">
+        <h1>Time Manager</h1>
+      </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+      <nav class="nav-links">
+        <RouterLink to="/clock/1">Clock Manager</RouterLink>
+        <RouterLink to="/workingTimes/1">Working Times</RouterLink>
+        <RouterLink to="/workingTime/1">New Working Time</RouterLink>
+        <RouterLink to="/chartManager/1">Charts</RouterLink>
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <RouterView />
+    <section class="user-section">
+      <User />
+    </section>
+
+    <main class="content-area">
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+#app-container {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.nav-links {
+  display: flex;
+  gap: 1rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.nav-links a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+.nav-links a.router-link-active {
+  background-color: #42b883;
+  color: white;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.user-section {
+  width: 95%;
+  max-width: 1400px;
+  margin: 1.5rem auto 1rem auto;
+  background: transparent; /* Asigură fundal transparent fără chenar */
+  border: none;
+  padding: 0;
 }
 
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.content-area {
+  padding: 1rem 0;
 }
 </style>
