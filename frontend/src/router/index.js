@@ -1,22 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import WorkingTime from '@/components/WorkingTime.vue'
+import WorkingTimes from '@/components/WorkingTimes.vue'
+import ClockManager from '@/components/ClockManager.vue'
+import ChartManager from '@/components/ChartManager.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
+      path: '/workingTimes/:userID',
+      name: 'WorkingTimes',
+      component: WorkingTimes,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/workingTime/:userID',
+      name: 'WorkingTimeCreate',
+      component: WorkingTime
     },
+    {
+      path: '/workingTime/:userID/:id',
+      name: 'WorkingTimeEdit',
+      component: WorkingTime
+    },
+    {
+      path: '/clock/:userID',
+      name: 'ClockManager',
+      component: ClockManager
+    },
+    {
+      path: '/chartManager/:userID',
+      name: 'ChartManager',
+      component: ChartManager
+    }
   ],
 })
 
