@@ -1,6 +1,11 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import User from './components/User.vue';
+import { globalState } from './state.js';
+
+const activeId = computed(() => globalState.currentUser?.id || null)
+
 </script>
 
 <template>
@@ -11,10 +16,18 @@ import User from './components/User.vue';
       </div>
 
       <nav class="nav-links">
-        <RouterLink to="/clock/1">Clock Manager</RouterLink>
-        <RouterLink to="/workingTimes/1">Working Times</RouterLink>
-        <RouterLink to="/workingTime/1">New Working Time</RouterLink>
-        <RouterLink to="/chartManager/1">Charts</RouterLink>
+        <template v-if="activeId">
+          <RouterLink :to="'/clock/' + activeId">Clock Manager</RouterLink>
+          <RouterLink :to="'/workingTimes/' + activeId">Working Times</RouterLink>
+          <RouterLink :to="'/workingTime/' + activeId">New Working Time</RouterLink>
+          <RouterLink :to="'/chartManager/' + activeId">Charts</RouterLink>
+        </template>
+        <template v-else>
+          <span class="nav-disabled" title="Please select a user!">Clock Manager</span>
+          <span class="nav-disabled" title="Please select a user!">Working Times</span>
+          <span class="nav-disabled" title="Please select a user!">New Working Time</span>
+          <span class="nav-disabled" title="Please select a user!">Charts</span>
+        </template>
       </nav>
     </header>
 
@@ -48,6 +61,15 @@ import User from './components/User.vue';
 .nav-links {
   display: flex;
   gap: 1rem;
+}
+
+.nav-disabled {
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.2rem;
+  cursor: not-allowed;
+  border-radius: 8px;
 }
 
 .nav-links a {

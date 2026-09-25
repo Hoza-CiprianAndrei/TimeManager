@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
@@ -44,8 +44,19 @@ function updateTimer()
     return
   }
 
-  const start = new Date(startDateTime.value.replace(' ', 'T')).getTime()
-  const now = new Date().getTime()
+  const formattedIso = String(startDateTime.value).includes('T')
+    ? startDateTime.value
+    : startDateTime.value.replace(' ', 'T')
+
+  const start = new Date(formattedIso).getTime()
+  const now = Date.now()
+
+  if (isNaN(start))
+  {
+    elapsedTime.value = '00:00:00'
+    return
+  }
+
   const diffInSeconds = Math.max(0, Math.floor((now - start) / 1000))
 
   const hrs = String(Math.floor(diffInSeconds / 3600)).padStart(2, '0')
@@ -71,9 +82,30 @@ function stopLiveCounter()
   }
 }
 
+function getActiveUserId()
+{
+  const fromRoute = route.params.userID
+
+  if (fromRoute)
+    return fromRoute
+
+  const savedUser = sessionStorage.getItem('activeUser')
+  if (savedUser)
+  {
+    try {
+      const parsed = JSON.parse(savedUser)
+      return parsed.id
+    } catch (err)
+    {
+      return null
+    }
+  }
+  return null
+}
+
 async function refresh()
 {
-  const userID = route.params.userID
+  const userID = getActiveUserId()
   
   if (!userID)
     return
@@ -84,27 +116,22 @@ async function refresh()
     const response = await axios.get(`${API_BASE}/clocks/${userID}`)
     const clockData = response.data.data
 
-    if (clockData)
+    if (clockData && clockData.status)
     {
-      clockin.value = Boolean(clockData.status)
-      startDataTime.value = clockin.value ? clockData.time : null
-
-      if (clockin.value)
-        startLiveCounter()
-      else
-        stopLiveCounter()
+      clockin.value = true
+      startDateTime.value = String(clockData.time).replace('T', ' ')
+      startLiveCounter()
     }
     else
     {
       clockin.value = false
-      startDataTime.value = null
+      startDateTime.value = null
       stopLiveCounter()
+      elapsedTime.value = '00:00:00'
     }
   } catch (err)
   {
-    clockin.value = false
-    startDateTime.value = null
-    stopLiveCounter()
+    console.error('Error at refresh:', err)
   } finally 
   {
     loading.value = false
@@ -113,7 +140,7 @@ async function refresh()
 
 async function clock()
 {
-  const userID = route.params.userID
+  const userID = getActiveUserId()
   if (!userID)
   {
     showNotification('Error: There is no user with this ID', true)
@@ -138,21 +165,23 @@ async function clock()
     const result = response.data.data
 
     clockin.value = Boolean(result.status)
-    startDateTime.value = clockin.value ? result.time : null
+    startDateTime.value = clockin.value ? String(result.time).replace('T', ' ') : null
 
     if (clockin.value)
     {
       startLiveCounter()
-      showNotification(`Session started at: ${result.time}`)
+      showNotification(`Session started at: ${startDateTime.value}`)
     }
     else
     {
       stopLiveCounter()
-      showNotification(`Session ended at: ${result.time}`)
+      elapsedTime.value = '00:00:00'
+      showNotification(`Session ended at: ${String(result.time).replace('T', ' ')}`)
     }
   } catch (err)
   {
     showNotification('Error when trying to change the clock status!', true)
+    console.error("Error at clockOut:", err.response || err)
   } finally {
     loading.value = false
   }
@@ -169,6 +198,11 @@ watch(
 onMounted(() => {
   refresh()
 })
+
+onUnmounted(() => {
+  stopLiveCounter()
+})
+
 </script>
 
 <template>
@@ -176,19 +210,17 @@ onMounted(() => {
     <div class="card-header">
       <div class="header-info">
         <h3>Clock Manager</h3>
-        <span class="user-tag">User ID: #{{ route.params.userid }}</span>
+        <span class="user-tag">User ID: #{{ getActiveUserId() || 'Not set' }}</span>
       </div>
       <button class="btn-refresh" @click="refresh" :disabled="loading" title="Refresh">
         Refresh
       </button>
     </div>
 
-    <!-- Alerte -->
     <div v-if="message" :class="['alert', isError ? 'alert-danger' : 'alert-success']">
       {{ message }}
     </div>
 
-    <!-- Panou vizual status ceas -->
     <div class="status-panel">
       <div class="indicator-row">
         <span class="pulse-dot" :class="{ 'pulse-active': clockin }"></span>
@@ -214,7 +246,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Butonul principal de acțiune -->
     <div class="action-panel">
       <button
         class="clock-btn"
