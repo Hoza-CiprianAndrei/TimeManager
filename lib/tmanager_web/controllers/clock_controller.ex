@@ -7,7 +7,7 @@ defmodule TodolistWeb.ClockController do
   def show(conn, %{"userID" => user_id}) do
     case TimeTracking.get_last_clock_by_user(user_id) do
       nil -> 
-        conn |> put_status(:not_found) |> json(%{error: "No clock found for this user"})
+        conn |> put_status(:ok) |> json(%{data: nil})
       %Clock{} = clock ->
         render(conn, :show, clock: clock)
     end

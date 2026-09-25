@@ -6,10 +6,21 @@ defmodule Todolist.TimeTracking do
   alias Todolist.TimeTracking.Clock
 
   def get_last_clock_by_user(user_id) do
-    from(c in Clock,
-      where: c.user_id == ^user_id,
-      order_by: [desc: c.inserted_at, desc: c.id],
-      limit: 1) |> Repo.one()
+    parsed_user_id = 
+      case user_id do
+        id when is_integer(id) -> id
+        id when is_binary(id) -> String.to_integer(id)
+        _ -> nil
+      end
+    
+    if parsed_user_id do
+      from(c in Clock,
+        where: c.user_id == ^parsed_user_id,
+        order_by: [desc: c.id],
+        limit: 1) |> Repo.one()
+    else
+      nil
+    end
   end
 
   def create_clock_for_user(user_id, attrs \\ %{}) do

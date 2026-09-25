@@ -14,6 +14,7 @@ defmodule Todolist.TimeTracking.Clock do
   def changeset(clock, attrs) do
     clock
     |> cast(attrs, [:time, :status, :user_id])
-    |> validate_required([:time, :status, :user_id])
+    |> validate_required([:time, :user_id])
+    |> validate_inclusion(:status, [true, false])
   end
 end
