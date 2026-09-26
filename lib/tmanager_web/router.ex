@@ -16,8 +16,9 @@ defmodule TodolistWeb.Router do
       delete "/:userID", UserController, :delete
     end
 
+    get "/workingtimes/:userID", WorkingTimeController, :index
+
     scope "/workingtime" do
-      get "/:userID", WorkingTimeController, :index
       get "/:userID/:id", WorkingTimeController, :show
       post "/:userID", WorkingTimeController, :create
       put "/:id", WorkingTimeController, :update

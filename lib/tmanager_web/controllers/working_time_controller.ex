@@ -15,12 +15,30 @@ defmodule TodolistWeb.WorkingTimeController do
         end
     end
 
-    def index(conn, %{"userID" => userid, "start" => start_time, "end" => end_time}) do
-        query = from w in WorkingTime,
-                where: w.user_id == ^userid and w.start >= ^start_time and w.end <= ^end_time,
-                order_by: [asc: w.start]
-        workingtimes = Repo.all(query)
-        render(conn, :index, workingtimes: workingtimes)
+    def index(conn, %{"userID" => userid} = params) do
+        user_id = if is_binary(userid), do: String.to_integer(userid), else: userid
+
+        query =
+          from w in WorkingTime,
+            where: w.user_id == ^user_id,
+            order_by: [asc: w.start]
+        
+        query =
+          case Map.get(params, "start") do
+            nil -> query
+            "" -> query
+            start_time -> from w in query, where: w.start >= ^start_time
+          end
+
+          query =
+            case Map.get(params, "end") do
+              nil -> query
+              "" -> query
+            end_time -> from w in query, where: w.end <= ^end_time
+            end
+
+          workingtimes = Repo.all(query)
+          render(conn, :index, workingtimes: workingtimes)
     end
 
   def create(conn, %{"userID" => user_id, "working_time" => working_time_params}) do
