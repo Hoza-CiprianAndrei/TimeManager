@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { activeUserId } from '../activeSession.js'
 
 const router = useRouter()
 const API_URL = 'http://localhost:4000/api/users'
@@ -44,6 +45,7 @@ async function getUser() {
     }
 
     currentUser.value = response.data.data
+    activeUserId.value = currentUser.value.id
     form.value.username = currentUser.value.username
     form.value.email = currentUser.value.email
     showNotification(`User found: ${currentUser.value.username}!`)
@@ -74,6 +76,7 @@ async function createUser() {
 
     const response = await axios.post(API_URL, payload)
     currentUser.value = response.data.data
+    activeUserId.value = currentUser.value.id
     showNotification(`The user ${currentUser.value.username} was created with the ID: ${currentUser.value.id}`)
     router.push(`/clock/${currentUser.value.id}`)
   } catch (err)
@@ -125,6 +128,7 @@ async function deleteUser()
     await axios.delete(`${API_URL}/${currentUser.value.id}`)
     showNotification(`The user ${currentUser.value.username} was deleted!`)
     currentUser.value = null
+    activeUserId.value = null
     form.value.username = ''
     form.value.email = ''
     searchId.value = ''

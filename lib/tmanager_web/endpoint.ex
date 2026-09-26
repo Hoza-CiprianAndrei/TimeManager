@@ -45,6 +45,8 @@ defmodule TodolistWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug CORSPlug, origin: ["http://localhost:5173"]
+  plug CORSPlug, origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5147"]
+  plug TodolistWeb.Router
+  plug CORSPlug, origin: "*"
   plug TodolistWeb.Router
 end

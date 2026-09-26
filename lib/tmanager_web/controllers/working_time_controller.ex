@@ -23,6 +23,14 @@ defmodule TodolistWeb.WorkingTimeController do
         render(conn, :index, workingtimes: workingtimes)
     end
 
+    def index(conn, %{"userID" => userid}) do
+        query = from w in WorkingTime,
+                where: w.user_id == ^userid,
+                order_by: [asc: w.start]
+        workingtimes = Repo.all(query)
+        render(conn, :index, workingtimes: workingtimes)
+    end
+
   def create(conn, %{"userID" => user_id, "working_time" => working_time_params}) do
     params_with_user = Map.put(working_time_params, "user_id", user_id)
     changeset = WorkingTime.changeset(%WorkingTime{}, params_with_user)
