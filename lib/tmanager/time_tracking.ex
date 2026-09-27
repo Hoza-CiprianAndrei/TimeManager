@@ -23,6 +23,16 @@ defmodule Todolist.TimeTracking do
     end
   end
 
+  def get_last_clock_in(user_id) do
+    user_id = if is_binary(user_id), do: String.to_integer(user_id), else: user_id
+
+    Clock
+    |> where([c], c.user_id == ^user_id and c.status == true)
+    |> order_by([c], desc: c.inserted_at)
+    |> limit(1)
+    |> Repo.one()
+  end
+
   def create_clock_for_user(user_id, attrs \\ %{}) do
     attrs_with_user = Map.put(attrs, "user_id", user_id)
 

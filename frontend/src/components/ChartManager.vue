@@ -80,9 +80,16 @@ function getDurationInHours(startStr, endStr)
 const processedDays = computed(() => {
   const map = {}
   rawWorkingTimes.value.forEach((item) => {
-    if (item.start || !item.end)
+    if (!item.start || !item.end)
       return
-    const dayKey = item.start.split('T')[0].split(' ')[0]
+    let dayKey = ''
+    if (typeof item.start === 'string')
+      dayKey = item.start.substring(0, 10)
+    else
+    {
+      const d = new Date(item.start)
+      dayKey = !isNaN(d.getTime()) ? d.toISOString().substring(0, 10) : 'Unknown data'
+    }
     const hours = getDurationInHours(item.start, item.end)
     map[dayKey] = (map[dayKey] || 0) + hours
   })
@@ -129,8 +136,16 @@ const barOptions = {
     legend: { labels: { color: '#94a3b8' } }
   },
   scales: {
-    x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-    y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' }, beginAtZero: true }
+    x: { 
+      ticks: { color: '#94a3b8' }, 
+      grid: { color: '#334155' } 
+    },
+    y: { 
+      ticks: { color: '#94a3b8' }, 
+      grid: { color: '#334155' }, 
+      beginAtZero: true,
+      suggestedMax: 10 
+    }
   }
 }
 
@@ -158,8 +173,16 @@ const lineOptions = {
     legend: { labels: { color: '#94a3b8' } }
   },
   scales: {
-    x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-    y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' }, beginAtZero: true }
+    x: { 
+      ticks: { color: '#94a3b8' }, 
+      grid: { color: '#334155' } 
+    },
+    y: { 
+      ticks: { color: '#94a3b8' }, 
+      grid: { color: '#334155' }, 
+      beginAtZero: true,
+      suggestedMax: 10
+    }
   }
 }
 
