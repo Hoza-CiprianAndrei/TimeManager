@@ -36,9 +36,9 @@ async function getUser() {
     let response
 
     if (searchId.value) 
-      response = await axios.get(`${API_URL}/${searchId.value}`)
+      response = await axios.get(`${API_URL}/users/${searchId.value}`)
     else if (searchEmail.value && searchUsername.value)
-      response = await axios.get(`${API_URL}?email=${searchEmail.value}&username=${searchUsername.value}`)
+      response = await axios.get(`${API_URL}/users/?email=${searchEmail.value}&username=${searchUsername.value}`)
     else
     {
       showNotification('Please enter an ID or search the user by email and username!', true)
@@ -103,7 +103,7 @@ async function updateUser()
       }
     }
 
-    const response = await axios.put(`${API_URL}/${currentUser.value.id}`, payload)
+    const response = await axios.put(`${API_URL}/users/${currentUser.value.id}`, payload)
     currentUser.value = response.data.data
     showNotification('The user data is updated!')
   } catch (err)
@@ -126,7 +126,7 @@ async function deleteUser()
 
   try
   {
-    await axios.delete(`${API_URL}/${currentUser.value.id}`)
+    await axios.delete(`${API_URL}/users/${currentUser.value.id}`)
     showNotification(`The user ${currentUser.value.username} was deleted!`)
     globalState.clearUser()
     form.value.username = ''
