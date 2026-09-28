@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: timemanager_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  phoenix:
+    image: ${DOCKER_USER}/timemanager-backend:latest
+    container_name: timemanager_backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      PORT: ${PORT}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    ports:
+      - "4000:4000"
+
+  frontend:
+    image: ${DOCKER_USER}/timemanager-frontend:latest
+    container_name: timemanager_frontend
+    restart: always
+    depends_on:
+      - phoenix
+    ports:
+      - "80:80"
+
+volumes:
+  db_data:
