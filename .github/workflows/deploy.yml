@@ -42,15 +42,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Copy docker-compose to VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.AZURE_VM_IP }}
-          username: ${{ secrets.AZURE_VM_USER }}
-          key: ${{ secrets.AZURE_SSH_KEY }}
-          source: "docker-compose.prod.yml"
-          target: "~/timemanager"
-
       - name: Run Deploy Script via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -58,13 +49,13 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_KEY }}
           script: |
-            mkdir -p ~/timemanager
-            cd ~/timemanager
-
-            mv -f docker-compose.prod.yml docker-compose.yml 2>/dev/null || true
+            mkdir -p /home/epitech_azure/timemanager
+            cd /home/epitech_azure/timemanager
 
             echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
 
-            docker-compose pull
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-backend:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-frontend:latest
+
             docker-compose down || true
             docker-compose up -d --remove-orphans
