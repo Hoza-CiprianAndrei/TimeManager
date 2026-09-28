@@ -38,6 +38,7 @@ defmodule Todolist.MixProject do
       {:cors_plug, "~> 3.0"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
+      {:idna, "~> 6.1.1", override: true},
       {:phoenix_live_dashboard, "~> 0.7.2"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},

@@ -1,4 +1,4 @@
-FROM elixir:alpine
+FROM elixir:1.17.3-otp-26-alpine
 
 RUN apk add --no-cache build-base npm git inotify-tools netcat-openbsd
 
