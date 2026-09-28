@@ -2,7 +2,11 @@ name: CI/CD Pipeline - TimeManager
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
 
 jobs:
   build-and-push:
@@ -48,6 +52,7 @@ jobs:
           host: ${{ secrets.AZURE_VM_IP }}
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_KEY }}
+          command_timeout: 10m
           script: |
             mkdir -p /home/epitech_azure/timemanager
             cd /home/epitech_azure/timemanager
@@ -57,5 +62,7 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-backend:latest
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-frontend:latest
 
-            docker-compose down || true
+            docker-compose down -t 10 || true
             docker-compose up -d --remove-orphans
+
+            docker image prune -af --filter "until=24h"

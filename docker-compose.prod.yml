@@ -4,7 +4,12 @@ services:
   db:
     image: postgres:15-alpine
     container_name: timemanager_db
-    restart: always
+    restart: on-failure:5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
     environment:
       POSTGRES_USER: ${PGUSER}
       POSTGRES_PASSWORD: ${PGPASSWORD}
@@ -17,7 +22,12 @@ services:
   phoenix:
     image: ${DOCKER_USER}/timemanager-backend:latest
     container_name: timemanager_backend
-    restart: always
+    restart: on-failure:5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.80'
+          memory: 450M
     depends_on:
       - db
     environment:
@@ -34,7 +44,12 @@ services:
   frontend:
     image: ${DOCKER_USER}/timemanager-frontend:latest
     container_name: timemanager_frontend
-    restart: always
+    restart: on-failure:5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.30'
+          memory: 128M
     depends_on:
       - phoenix
     ports:
