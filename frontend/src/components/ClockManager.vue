@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 
 const route = useRoute()
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = '/api'
 
 const startDateTime = ref(null)
 const clockin = ref(false)

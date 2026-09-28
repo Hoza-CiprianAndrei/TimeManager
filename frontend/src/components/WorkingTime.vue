@@ -6,7 +6,7 @@ import { globalState } from '../state.js'
 
 const route = useRoute()
 const router = useRouter()
-const API_BASE = 'http://localhost:4000/api'
+const API_BASE = '/api'
 
 const userId = computed(() => globalState.currentUser?.id)
 const workingTimeId = ref(route.params.workingtimeid || route.params.workingTimeId)

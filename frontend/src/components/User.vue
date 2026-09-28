@@ -6,7 +6,7 @@ import { globalState } from '../state.js'
 import { computed } from 'vue'
 
 const router = useRouter()
-const API_URL = 'http://localhost:4000/api/users'
+const API_URL = '/api'
 
 const currentUser = computed(() => globalState.currentUser)
 
