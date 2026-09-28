@@ -10,4 +10,4 @@ echo "Database active!"
 mix ecto.create
 mix ecto.migrate
 
-exec mix.phx.server
+exec mix phx.server
