@@ -75,7 +75,7 @@ async function createUser() {
       }
     }
 
-    const response = await axios.post(API_URL, payload)
+    const response = await axios.post(`${API_URL}/users`, payload)
     globalState.setUser(response.data.data)
     localStorage.setItem('activeUser', JSON.stringigy(currentUser.value))
     showNotification(`The user ${currentUser.value.username} was created with the ID: ${currentUser.value.id}`)
