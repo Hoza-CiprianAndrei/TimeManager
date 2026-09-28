@@ -1,0 +1,69 @@
+name: CI/CD Pipeline - TimeManager
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-push:
+    name: Build & Push Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Backend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-backend:latest
+
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-frontend:latest
+
+  deploy:
+    name: Deploy to Azure VPS
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "~/timemanager"
+
+      - name: Run Deploy Script via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          script: |
+            mkdir -p ~/timemanager
+            cd ~/timemanager
+
+            echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+
+            docker-compose down || true
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-backend:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-frontend:latest
+            docker-compose up -d --remove-orphans
