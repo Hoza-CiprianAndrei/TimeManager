@@ -75,7 +75,3 @@ volumes:
   db_data:
   certbot_www:
   certbot_conf:
-
-networks:
-  timemanager_default:
-    driver: bridge
