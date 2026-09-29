@@ -1,4 +1,4 @@
-defmodule TodolistWeb do
+defmodule TmanagerWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
@@ -39,10 +39,10 @@ defmodule TodolistWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: TodolistWeb.Layouts]
+        layouts: [html: TmanagerWeb.Layouts]
 
       import Plug.Conn
-      import TodolistWeb.Gettext
+      import TmanagerWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -51,9 +51,9 @@ defmodule TodolistWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: TodolistWeb.Endpoint,
-        router: TodolistWeb.Router,
-        statics: TodolistWeb.static_paths()
+        endpoint: TmanagerWeb.Endpoint,
+        router: TmanagerWeb.Router,
+        statics: TmanagerWeb.static_paths()
     end
   end
 

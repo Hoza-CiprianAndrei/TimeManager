@@ -1,9 +1,9 @@
-defmodule TodolistWeb.UserControllerTest do
-  use TodolistWeb.ConnCase
+defmodule TmanagerWeb.UserControllerTest do
+  use TmanagerWeb.ConnCase
 
-  import Todolist.AccountsFixtures
+  import Tmanager.AccountsFixtures
 
-  alias Todolist.Accounts.User
+  alias Tmanager.Accounts.User
 
   @create_attrs %{
     username: "some username",

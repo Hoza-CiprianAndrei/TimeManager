@@ -1,18 +1,18 @@
-defmodule Todolist.TimeTracking do
+defmodule Tmanager.TimeTracking do
 
   import Ecto.Query, warn: false
-  alias Todolist.Repo
+  alias Tmanager.Repo
 
-  alias Todolist.TimeTracking.Clock
+  alias Tmanager.TimeTracking.Clock
 
   def get_last_clock_by_user(user_id) do
-    parsed_user_id = 
+    parsed_user_id =
       case user_id do
         id when is_integer(id) -> id
         id when is_binary(id) -> String.to_integer(id)
         _ -> nil
       end
-    
+
     if parsed_user_id do
       from(c in Clock,
         where: c.user_id == ^parsed_user_id,

@@ -1,4 +1,4 @@
-defmodule TodolistWeb.UserJSON do
+defmodule TmanagerWeb.UserJSON do
 
     def index(%{users: users}) do
         %{data: for(user <- users, do: data(user))}

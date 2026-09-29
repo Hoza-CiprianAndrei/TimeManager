@@ -1,7 +1,7 @@
-defmodule Todolist.AccountsFixtures do
+defmodule Tmanager.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Todolist.Accounts` context.
+  entities via the `Tmanager.Accounts` context.
   """
 
   @doc """
@@ -14,7 +14,7 @@ defmodule Todolist.AccountsFixtures do
         email: "some email",
         username: "some username"
       })
-      |> Todolist.Accounts.create_user()
+      |> Tmanager.Accounts.create_user()
 
     user
   end

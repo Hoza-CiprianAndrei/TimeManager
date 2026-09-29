@@ -1,9 +1,9 @@
-defmodule TodolistWeb.TaskController do
-  use TodolistWeb, :controller
+defmodule TmanagerWeb.TaskController do
+  use TmanagerWeb, :controller
 
   import Ecto.Query, only: [from: 2]
-  alias Todolist.Repo
-  alias Todolist.Tasks.Task
+  alias Tmanager.Repo
+  alias Tmanager.Tasks.Task
 
   def index(conn, _params) do
     tasks = Repo.all(Task)

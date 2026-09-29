@@ -1,4 +1,4 @@
-defmodule Todolist.Tasks.Task do
+defmodule Tmanager.Tasks.Task do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,7 +7,7 @@ defmodule Todolist.Tasks.Task do
     field :status, :string
     field :description, :string
     field :title, :string
-    belongs_to :user, Todolist.Accounts.User
+    belongs_to :user, Tmanager.Accounts.User
 
     timestamps()
   end

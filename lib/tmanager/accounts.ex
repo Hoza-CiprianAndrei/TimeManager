@@ -1,12 +1,12 @@
-defmodule Todolist.Accounts do
+defmodule Tmanager.Accounts do
   @moduledoc """
   The Accounts context.
   """
 
   import Ecto.Query, warn: false
-  alias Todolist.Repo
+  alias Tmanager.Repo
 
-  alias Todolist.Accounts.User
+  alias Tmanager.Accounts.User
 
   @doc """
   Returns the list of users.

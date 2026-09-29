@@ -1,5 +1,5 @@
-defmodule TodolistWeb.ClockJSON do
-  alias Todolist.TimeTracking.Clock
+defmodule TmanagerWeb.ClockJSON do
+  alias Tmanager.TimeTracking.Clock
 
   def show(%{clock: clock}) do
     %{data: data(clock)}

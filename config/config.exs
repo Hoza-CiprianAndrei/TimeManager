@@ -8,18 +8,18 @@
 import Config
 
 config :tmanager,
-  namespace: Todolist,
-  ecto_repos: [Todolist.Repo]
+  namespace: Tmanager,
+  ecto_repos: [Tmanager.Repo]
 
 # Configures the endpoint
-config :tmanager, TodolistWeb.Endpoint,
+config :tmanager, TmanagerWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [json: TodolistWeb.ErrorJSON],
+    formats: [json: TmanagerWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Todolist.PubSub,
+  pubsub_server: Tmanager.PubSub,
   live_view: [signing_salt: "l870gh7i"]
 
 # Configures the mailer
@@ -29,7 +29,7 @@ config :tmanager, TodolistWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :tmanager, Todolist.Mailer, adapter: Swoosh.Adapters.Local
+config :tmanager, Tmanager.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,

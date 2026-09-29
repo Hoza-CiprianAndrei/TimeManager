@@ -1,4 +1,4 @@
-defmodule Todolist.Repo do
+defmodule Tmanager.Repo do
   use Ecto.Repo,
     otp_app: :tmanager,
     adapter: Ecto.Adapters.Postgres

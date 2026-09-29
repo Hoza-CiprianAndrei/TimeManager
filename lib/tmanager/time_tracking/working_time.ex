@@ -1,12 +1,12 @@
-defmodule Todolist.TimeTracking.WorkingTime do
+defmodule Tmanager.TimeTracking.WorkingTime do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "workingtimes" do
     field :start, :naive_datetime
     field :end, :naive_datetime
-    
-    belongs_to :user, Todolist.Accounts.User
+
+    belongs_to :user, Tmanager.Accounts.User
 
     timestamps()
   end

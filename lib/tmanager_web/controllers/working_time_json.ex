@@ -1,4 +1,4 @@
-defmodule TodolistWeb.WorkingTimeJSON do
+defmodule TmanagerWeb.WorkingTimeJSON do
     def index(%{workingtimes: workingtimes}) do
         %{data: for(wt <- workingtimes, do: data(wt))}
     end
@@ -11,7 +11,7 @@ defmodule TodolistWeb.WorkingTimeJSON do
         %{
             id: wt.id,
             start: wt.start,
-            end: wt.end,
+            end: Map.get(wt, :end),
             user: wt.user_id
         }
     end

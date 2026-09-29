@@ -1,9 +1,9 @@
-defmodule TodolistWeb.WorkingTimeControllerTest do
-  use TodolistWeb.ConnCase
+defmodule TmanagerWeb.WorkingTimeControllerTest do
+  use TmanagerWeb.ConnCase
 
-  import Todolist.TimeTrackingFixtures
+  import Tmanager.TimeTrackingFixtures
 
-  alias Todolist.TimeTracking.WorkingTime
+  alias Tmanager.TimeTracking.WorkingTime
 
   @create_attrs %{
     start: ~N[2026-09-21 09:11:00],

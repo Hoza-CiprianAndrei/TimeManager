@@ -1,8 +1,8 @@
-defmodule TodolistWeb.UserController do
-  use TodolistWeb, :controller
+defmodule TmanagerWeb.UserController do
+  use TmanagerWeb, :controller
 
-    alias Todolist.Accounts.User
-    alias Todolist.Repo
+    alias Tmanager.Accounts.User
+    alias Tmanager.Repo
 
     def index(conn, %{"email" => email, "username" => username}) do
         case Repo.get_by(User, email: email, username: username) do

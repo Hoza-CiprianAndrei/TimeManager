@@ -1,6 +1,6 @@
-defmodule Todolist do
+defmodule Tmanager do
   @moduledoc """
-  Todolist keeps the contexts that define your domain
+  Tmanager keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

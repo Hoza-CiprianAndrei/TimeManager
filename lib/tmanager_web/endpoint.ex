@@ -1,4 +1,4 @@
-defmodule TodolistWeb.Endpoint do
+defmodule TmanagerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :tmanager
 
   # The session will be stored in the cookie and signed,
@@ -21,7 +21,7 @@ defmodule TodolistWeb.Endpoint do
     at: "/",
     from: :tmanager,
     gzip: false,
-    only: TodolistWeb.static_paths()
+    only: TmanagerWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -46,7 +46,7 @@ defmodule TodolistWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug CORSPlug, origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5147"]
-  plug TodolistWeb.Router
+  plug TmanagerWeb.Router
   plug CORSPlug, origin: "*"
-  plug TodolistWeb.Router
+  plug TmanagerWeb.Router
 end

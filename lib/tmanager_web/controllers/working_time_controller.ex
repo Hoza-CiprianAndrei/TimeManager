@@ -1,9 +1,9 @@
-defmodule TodolistWeb.WorkingTimeController do
-    use TodolistWeb, :controller
+defmodule TmanagerWeb.WorkingTimeController do
+    use TmanagerWeb, :controller
 
     import Ecto.Query
-    alias Todolist.Repo
-    alias Todolist.TimeTracking.WorkingTime
+    alias Tmanager.Repo
+    alias Tmanager.TimeTracking.WorkingTime
 
 
     def show(conn, %{"userID" => userid, "id" => id}) do
@@ -22,7 +22,7 @@ defmodule TodolistWeb.WorkingTimeController do
           from w in WorkingTime,
             where: w.user_id == ^user_id,
             order_by: [asc: w.start]
-        
+
         query =
           case Map.get(params, "start") do
             nil -> query

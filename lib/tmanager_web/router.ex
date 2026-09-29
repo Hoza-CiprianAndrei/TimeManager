@@ -1,11 +1,11 @@
-defmodule TodolistWeb.Router do
-  use TodolistWeb, :router
+defmodule TmanagerWeb.Router do
+  use TmanagerWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/api", TodolistWeb do
+  scope "/api", TmanagerWeb do
     pipe_through :api
 
     scope "/users" do
@@ -52,7 +52,7 @@ defmodule TodolistWeb.Router do
     scope "/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
-      live_dashboard "/dashboard", metrics: TodolistWeb.Telemetry
+      live_dashboard "/dashboard", metrics: TmanagerWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end

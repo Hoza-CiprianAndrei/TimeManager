@@ -1,12 +1,12 @@
-defmodule Todolist.AccountsTest do
-  use Todolist.DataCase
+defmodule Tmanager.AccountsTest do
+  use Tmanager.DataCase
 
-  alias Todolist.Accounts
+  alias Tmanager.Accounts
 
   describe "users" do
-    alias Todolist.Accounts.User
+    alias Tmanager.Accounts.User
 
-    import Todolist.AccountsFixtures
+    import Tmanager.AccountsFixtures
 
     @invalid_attrs %{username: nil, email: nil}
 

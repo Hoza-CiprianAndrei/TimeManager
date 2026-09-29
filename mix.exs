@@ -1,4 +1,4 @@
-defmodule Todolist.MixProject do
+defmodule Tmanager.MixProject do
   use Mix.Project
 
   def project do
@@ -18,7 +18,7 @@ defmodule Todolist.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Todolist.Application, []},
+      mod: {Tmanager.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -47,7 +47,8 @@ defmodule Todolist.MixProject do
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:bcrypt_elixir, "~> 3.0"}
     ]
   end
 

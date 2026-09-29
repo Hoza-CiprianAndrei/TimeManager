@@ -1,4 +1,4 @@
-defmodule TodolistWeb.Telemetry do
+defmodule TmanagerWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 

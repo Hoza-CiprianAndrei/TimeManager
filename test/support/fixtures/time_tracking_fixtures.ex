@@ -1,7 +1,7 @@
-defmodule Todolist.TimeTrackingFixtures do
+defmodule Tmanager.TimeTrackingFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Todolist.TimeTracking` context.
+  entities via the `Tmanager.TimeTracking` context.
   """
 
   @doc """
@@ -14,7 +14,7 @@ defmodule Todolist.TimeTrackingFixtures do
         status: true,
         time: ~N[2026-09-21 08:46:00]
       })
-      |> Todolist.TimeTracking.create_clock()
+      |> Tmanager.TimeTracking.create_clock()
 
     clock
   end
@@ -29,7 +29,7 @@ defmodule Todolist.TimeTrackingFixtures do
         status: true,
         time: ~N[2026-09-21 08:47:00]
       })
-      |> Todolist.TimeTracking.create_clock()
+      |> Tmanager.TimeTracking.create_clock()
 
     clock
   end
@@ -44,7 +44,7 @@ defmodule Todolist.TimeTrackingFixtures do
         end: ~N[2026-09-21 08:47:00],
         start: ~N[2026-09-21 08:47:00]
       })
-      |> Todolist.TimeTracking.create_working_time()
+      |> Tmanager.TimeTracking.create_working_time()
 
     working_time
   end
@@ -59,7 +59,7 @@ defmodule Todolist.TimeTrackingFixtures do
         status: true,
         time: ~N[2026-09-21 09:10:00]
       })
-      |> Todolist.TimeTracking.create_clock()
+      |> Tmanager.TimeTracking.create_clock()
 
     clock
   end
@@ -74,7 +74,7 @@ defmodule Todolist.TimeTrackingFixtures do
         end: ~N[2026-09-21 09:11:00],
         start: ~N[2026-09-21 09:11:00]
       })
-      |> Todolist.TimeTracking.create_working_time()
+      |> Tmanager.TimeTracking.create_working_time()
 
     working_time
   end

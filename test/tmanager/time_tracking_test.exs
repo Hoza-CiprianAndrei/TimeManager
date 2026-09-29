@@ -1,12 +1,12 @@
-defmodule Todolist.TimeTrackingTest do
-  use Todolist.DataCase
+defmodule Tmanager.TimeTrackingTest do
+  use Tmanager.DataCase
 
-  alias Todolist.TimeTracking
+  alias Tmanager.TimeTracking
 
   describe "clocks" do
-    alias Todolist.TimeTracking.Clock
+    alias Tmanager.TimeTracking.Clock
 
-    import Todolist.TimeTrackingFixtures
+    import Tmanager.TimeTrackingFixtures
 
     @invalid_attrs %{status: nil, time: nil}
 
@@ -60,9 +60,9 @@ defmodule Todolist.TimeTrackingTest do
   end
 
   describe "clocks" do
-    alias Todolist.TimeTracking.Clock
+    alias Tmanager.TimeTracking.Clock
 
-    import Todolist.TimeTrackingFixtures
+    import Tmanager.TimeTrackingFixtures
 
     @invalid_attrs %{status: nil, time: nil}
 
@@ -116,9 +116,9 @@ defmodule Todolist.TimeTrackingTest do
   end
 
   describe "workingtimes" do
-    alias Todolist.TimeTracking.WorkingTime
+    alias Tmanager.TimeTracking.WorkingTime
 
-    import Todolist.TimeTrackingFixtures
+    import Tmanager.TimeTrackingFixtures
 
     @invalid_attrs %{start: nil, end: nil}
 
@@ -172,9 +172,9 @@ defmodule Todolist.TimeTrackingTest do
   end
 
   describe "clocks" do
-    alias Todolist.TimeTracking.Clock
+    alias Tmanager.TimeTracking.Clock
 
-    import Todolist.TimeTrackingFixtures
+    import Tmanager.TimeTrackingFixtures
 
     @invalid_attrs %{status: nil, time: nil}
 
@@ -228,9 +228,9 @@ defmodule Todolist.TimeTrackingTest do
   end
 
   describe "workingtimes" do
-    alias Todolist.TimeTracking.WorkingTime
+    alias Tmanager.TimeTracking.WorkingTime
 
-    import Todolist.TimeTrackingFixtures
+    import Tmanager.TimeTrackingFixtures
 
     @invalid_attrs %{start: nil, end: nil}
 

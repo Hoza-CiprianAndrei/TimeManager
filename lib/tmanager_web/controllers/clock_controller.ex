@@ -1,13 +1,13 @@
-defmodule TodolistWeb.ClockController do
-  use TodolistWeb, :controller
+defmodule TmanagerWeb.ClockController do
+  use TmanagerWeb, :controller
 
-  alias Todolist.TimeTracking
-  alias Todolist.TimeTracking.{Clock, WorkingTime}
-  alias Todolist.Repo
+  alias Tmanager.TimeTracking
+  alias Tmanager.TimeTracking.{Clock, WorkingTime}
+  alias Tmanager.Repo
 
   def show(conn, %{"userID" => user_id}) do
     case TimeTracking.get_last_clock_by_user(user_id) do
-      nil -> 
+      nil ->
         conn |> put_status(:ok) |> json(%{data: nil})
       %Clock{} = clock ->
         render(conn, :show, clock: clock)
@@ -36,7 +36,7 @@ defmodule TodolistWeb.ClockController do
         end
 
         conn |> put_status(:created) |> render(:show, clock: clock)
-      
+
       {:error, changeset} ->
         conn |> put_status(:bad_request) |> json(%{errors: format_errors(changeset)})
     end

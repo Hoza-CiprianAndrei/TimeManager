@@ -1,9 +1,9 @@
-defmodule TodolistWeb.ClockControllerTest do
-  use TodolistWeb.ConnCase
+defmodule TmanagerWeb.ClockControllerTest do
+  use TmanagerWeb.ConnCase
 
-  import Todolist.TimeTrackingFixtures
+  import Tmanager.TimeTrackingFixtures
 
-  alias Todolist.TimeTracking.Clock
+  alias Tmanager.TimeTracking.Clock
 
   @create_attrs %{
     status: true,
