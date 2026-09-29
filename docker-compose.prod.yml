@@ -54,6 +54,28 @@ services:
       - phoenix
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    networks:
+      - timemanager_default
+  
+  certbot:
+    image: certbot/certbot:latest
+    container_name: timemanager_certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - timemanager_default
 
 volumes:
   db_data:
+  certbot_www:
+  certbot_conf:
+
+networks:
+  timemanager_default:
+    driver: bridge
