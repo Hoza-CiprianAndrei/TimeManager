@@ -131,7 +131,7 @@ async function refresh()
   {
     const response = await axios.get(`${API_BASE}/users/${userID}`)
     user.value = response.data.data
-    userExists = true
+    userExists.value = true
 
     const clock_response = await axios.get(`${API_BASE}/clock/${userID}`)
     const clockData = clock_response.data.data
