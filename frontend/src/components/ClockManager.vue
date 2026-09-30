@@ -173,7 +173,7 @@ async function refresh()
     clockin.value = false
     startDateTime.value = null
     stopLiveCounter()
-    elapsedTime = '00:00:00'
+    elapsedTime.value = '00:00:00'
   } finally 
   {
     loading.value = false
