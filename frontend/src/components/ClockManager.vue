@@ -133,7 +133,7 @@ async function refresh()
     user.value = response.data.data
     userExists.value = true
 
-    const clock_response = await axios.get(`${API_BASE}/clock/${userID}`)
+    const clock_response = await axios.get(`${API_BASE}/clocks/${userID}`)
     const clockData = clock_response.data.data
 
     if (clockData && clockData.status)
