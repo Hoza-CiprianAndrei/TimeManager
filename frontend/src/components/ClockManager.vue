@@ -136,11 +136,24 @@ async function refresh()
   try
   {
     const response = await axios.get(`${API_BASE}/users/${userID}`)
-    user.value = response.data.data
+    user.value = response.data.data || response.data
     userExists.value = true
+  } catch (err) {
+    userExists.value = false
+    loading.value = false
+
+    if (err.response && err.response.status === 404)
+      showNotification(`User with ID #${userID} does not exist!`, true)
+    else //to do: error auth after user roles
+      showNotification('Failed to fetch user data', true)
+    
+    return
+  }
+
+  try {
 
     const clock_response = await axios.get(`${API_BASE}/clocks/${userID}`)
-    const clockData = clock_response.data.data
+    const clockData = clock_response.data.data || clock_response.data
 
     if (clockData && clockData.status)
     {
@@ -157,11 +170,10 @@ async function refresh()
     }
   } catch (err)
   {
-    userExists.value = false
-    if (err.response && err.response.status === 404)
-      showNotification(`User with ID #${userID} does not exist!`, true)
-    else //to do: error auth after user roles
-      showNotification('Failed to fetch user data', true)
+    clockin.value = false
+    startDateTime.value = null
+    stopLiveCounter()
+    elapsedTime = '00:00:00'
   } finally 
   {
     loading.value = false
@@ -219,9 +231,8 @@ async function clock()
 
 watch(
   () => route.params.userID,
-  (newId) => {
-    if (newId)
-      refresh()
+  () => {
+    refresh()
   }
 )
 
