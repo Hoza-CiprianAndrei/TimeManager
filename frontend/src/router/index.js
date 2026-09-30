@@ -34,6 +34,7 @@ const router = createRouter({
           alert("You need to select a user first!")
           return next({path: '/'})
         }
+        next()
       }
     },
     {
