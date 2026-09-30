@@ -25,7 +25,16 @@ const router = createRouter({
     {
       path: '/clock/:userID',
       name: 'ClockManager',
-      component: ClockManager
+      component: ClockManager,
+      beforeEnter: (to, from, next) => {
+        const savedUserRaw = sessionStorage.getItem('activeUser')
+
+        if (!savedUserRaw)
+        {
+          alert("You need to select a user first!")
+          return next({path: '/'})
+        }
+      }
     },
     {
       path: '/chartManager/:userID',

@@ -2,6 +2,8 @@
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import router from '@/router'
+import { parse } from 'vue/compiler-sfc'
 
 const route = useRoute()
 const API_BASE = '/api'
@@ -96,7 +98,8 @@ function getActiveUserId()
   {
     try {
       const parsed = JSON.parse(savedUser)
-      return parsed.id
+      if (String(parsed.id) === String(fromRoute))
+        return parsed.id
     } catch (err)
     {
       return null
@@ -122,6 +125,9 @@ async function refresh()
   {
     resetState()
     showNotification('No user specified!', true)
+    setTimeout(() => {
+      router.push('/')
+    }, 1500)
     return
   }
 
