@@ -13,6 +13,11 @@ defmodule TmanagerWeb.UserController do
         end
     end
 
+    def index(conn, _params) do
+      users = Repo.all(User)
+      render(conn, :index, users: users)
+    end
+
     def show(conn, %{"userID" => id}) do
         case Repo.get(User, id) do
             nil ->

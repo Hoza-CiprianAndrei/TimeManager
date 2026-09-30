@@ -5,13 +5,23 @@ defmodule TmanagerWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :authenticated do
+    plug TmanagerWeb.Plugs.AuthPlug
+  end
+
   scope "/api", TmanagerWeb do
     pipe_through :api
+
+    post "/login", AuthController, :login
+    post "/users", UserController, :create
+  end
+
+  scope "/api", TmanagerWeb do
+    pipe_through [:api, :authenticated]
 
     scope "/users" do
       get "/", UserController, :index
       get "/:userID", UserController, :show
-      post "/", UserController, :create
       put "/:userID", UserController, :update
       delete "/:userID", UserController, :delete
     end
@@ -42,11 +52,6 @@ defmodule TmanagerWeb.Router do
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:tmanager, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
