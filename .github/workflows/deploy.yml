@@ -62,7 +62,9 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-backend:latest
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-frontend:latest
 
-            docker-compose down -t 10 || true
-            docker-compose up -d --remove-orphans
+            docker-compose -f docker-compose.prod.yml down -t 10 || true
+            docker-compose -f docker-compose.prod.yml up -d --remove-orphans
 
+            sleep 10
+            
             docker image prune -af --filter "until=24h"
