@@ -6,6 +6,8 @@ import axios from 'axios'
 const route = useRoute()
 const API_BASE = '/api'
 
+const user = ref(null)
+const userExists = ref(false)
 const startDateTime = ref(null)
 const clockin = ref(false)
 
@@ -103,18 +105,36 @@ function getActiveUserId()
   return null
 }
 
+function resetState() {
+  user.value = null
+  userExists.value = false
+  clockin.value = false
+  startDateTime.value = null
+  stopLiveCounter()
+  elapsedTime.value = '00:00:00'
+}
+
 async function refresh()
 {
   const userID = getActiveUserId()
   
   if (!userID)
+  {
+    resetState()
+    showNotification('No user specified!', true)
     return
+  }
 
   loading.value = true
+  resetState()
   try
   {
-    const response = await axios.get(`${API_BASE}/clocks/${userID}`)
-    const clockData = response.data.data
+    const response = await axios.get(`${API_BASE}/users/${userID}`)
+    user.value = response.data.data
+    userExists = true
+
+    const clock_response = await axios.get(`${API_BASE}/clock/${userID}`)
+    const clockData = clock_response.data.data
 
     if (clockData && clockData.status)
     {
@@ -131,7 +151,11 @@ async function refresh()
     }
   } catch (err)
   {
-    console.error('Error at refresh:', err)
+    userExists.value = false
+    if (err.response && err.response.status === 404)
+      showNotification(`User with ID #${userID} does not exist!`, true)
+    else //to do: error auth after user roles
+      showNotification('Failed to fetch user data', true)
   } finally 
   {
     loading.value = false
@@ -141,7 +165,7 @@ async function refresh()
 async function clock()
 {
   const userID = getActiveUserId()
-  if (!userID)
+  if (!userID || !userExists.value)
   {
     showNotification('Error: There is no user with this ID', true)
     return
