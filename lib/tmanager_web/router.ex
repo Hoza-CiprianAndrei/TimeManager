@@ -18,6 +18,8 @@ defmodule TmanagerWeb.Router do
 
   scope "/api", TmanagerWeb do
     pipe_through [:api, :authenticated]
+    resources "/teams", TeamController, except: [:new, :edit]
+    post "/teams/:id/users", TeamController, :add_user
 
     scope "/users" do
       get "/", UserController, :index

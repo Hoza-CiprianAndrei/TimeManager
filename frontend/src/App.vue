@@ -1,11 +1,26 @@
 <script setup>
-import { computed } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
-import User from './components/User.vue';
-import { globalState } from './state.js';
+import { ref, watch } from 'vue'
+import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 
-const activeId = computed(() => globalState.currentUser?.id || null)
+const router = useRouter()
+const route = useRoute()
 
+// Reactive references to your security data
+const isAuthenticated = ref(!!localStorage.getItem('csrf_token'))
+const activeId = ref(localStorage.getItem('user_id'))
+const userRole = ref(localStorage.getItem('user_role'))
+
+// Automatically update the navbar whenever the route changes (like after login/logout)
+watch(route, () => {
+  isAuthenticated.value = !!localStorage.getItem('csrf_token')
+  activeId.value = localStorage.getItem('user_id')
+  userRole.value = localStorage.getItem('user_role')
+})
+
+const logout = () => {
+  localStorage.clear() // Wipes the tokens
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -16,24 +31,27 @@ const activeId = computed(() => globalState.currentUser?.id || null)
       </div>
 
       <nav class="nav-links">
-        <template v-if="activeId">
+        <!-- Links shown ONLY to logged-in users -->
+        <template v-if="isAuthenticated">
+          <!-- Only Administrators can see the Dashboard/Admin panel -->
+          <RouterLink v-if="userRole === 'Administrator'" to="/dashboard">Admin Dashboard</RouterLink>
+          
           <RouterLink :to="'/clock/' + activeId">Clock Manager</RouterLink>
           <RouterLink :to="'/workingTimes/' + activeId">Working Times</RouterLink>
           <RouterLink :to="'/workingTime/' + activeId">New Working Time</RouterLink>
           <RouterLink :to="'/chartManager/' + activeId">Charts</RouterLink>
+          <RouterLink to="/profile">My Profile</RouterLink>
+          
+          <button @click="logout" class="logout-btn">Logout</button>
         </template>
+        
+        <!-- Links shown ONLY to guests -->
         <template v-else>
-          <span class="nav-disabled" title="Please select a user!">Clock Manager</span>
-          <span class="nav-disabled" title="Please select a user!">Working Times</span>
-          <span class="nav-disabled" title="Please select a user!">New Working Time</span>
-          <span class="nav-disabled" title="Please select a user!">Charts</span>
+          <RouterLink to="/login">Sign In</RouterLink>
+          <RouterLink to="/register">Register</RouterLink>
         </template>
       </nav>
     </header>
-
-    <section class="user-section">
-      <User />
-    </section>
 
     <main class="content-area">
       <RouterView />
@@ -60,16 +78,8 @@ const activeId = computed(() => globalState.currentUser?.id || null)
 
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 1rem;
-}
-
-.nav-disabled {
-  color: #475569;
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.6rem 1.2rem;
-  cursor: not-allowed;
-  border-radius: 8px;
 }
 
 .nav-links a {
@@ -85,13 +95,19 @@ const activeId = computed(() => globalState.currentUser?.id || null)
   color: white;
 }
 
-.user-section {
-  width: 95%;
-  max-width: 1400px;
-  margin: 1.5rem auto 1rem auto;
-  background: transparent; /* Asigură fundal transparent fără chenar */
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
   border: none;
-  padding: 0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
 }
 
 .content-area {

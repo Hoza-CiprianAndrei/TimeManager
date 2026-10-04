@@ -20,9 +20,18 @@ defmodule Tmanager.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :email, :password, :role_id])
-    |> validate_required([:username, :email, :password, :role_id])
+    |> validate_required([:username, :email, :role_id])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+\.[^\s]+$/, message: "must have format X@X.X")
+    |> validate_password_if_new()
     |> put_password_hash()
+  end
+
+  defp validate_password_if_new(changeset) do
+    if get_field(changeset, :password_hash) == nil do
+      validate_required(changeset, [:password])
+    else
+      changeset
+    end
   end
 
   def put_password_hash(changeset) do
