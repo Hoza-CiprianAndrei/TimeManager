@@ -12,7 +12,9 @@ defmodule TmanagerWeb.UserJSON do
         %{
             id: user.id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            role_id: user.role_id,
+            teams: Enum.map(user.teams || [], fn team -> %{id: team.id, name: team.name} end)
         }
     end
 end
