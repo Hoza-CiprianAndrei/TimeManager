@@ -41,6 +41,7 @@ const handleRegister = async () => {
 
   const apiUrl = import.meta.env.VITE_API_URL
   try {
+    console.log("Test deploy URL:", import.meta.env.VITE_API_URL);
     const response = await fetch(`${apiUrl}/users`, {
       method: 'POST',
       headers: {
