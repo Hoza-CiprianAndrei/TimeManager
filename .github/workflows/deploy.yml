@@ -37,6 +37,8 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/timemanager-frontend:latest
+          build-args: |
+            API_URL=${{ secrets.API_URL }}
 
   deploy:
     name: Deploy to Azure VPS
