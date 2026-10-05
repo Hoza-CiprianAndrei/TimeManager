@@ -88,7 +88,7 @@ const selectedUserId = ref('')
 const fetchUsers = async () => {
   const apiUrl = import.meta.env.API_URL
   try {
-    const response = await fetch(`${apiUrl}/api/users`, {
+    const response = await fetch(`${apiUrl}/users`, {
       credentials: 'include',
       headers: {
         'Accept': 'application/json',
@@ -109,7 +109,7 @@ const fetchUsers = async () => {
 const updateUserRole = async (userId, newRoleId) => {
   try {
     const apiUrl = import.meta.env.API_URL
-    const response = await fetch(`${apiUrl}/api/users/${userId}`, {
+    const response = await fetch(`${apiUrl}/users/${userId}`, {
       method: 'PUT',
       credentials: 'include',
       headers: {
@@ -133,7 +133,7 @@ const updateUserRole = async (userId, newRoleId) => {
 // Fetch existing teams
 const fetchTeams = async () => {
   try {
-    const response = await fetch(`${apiUrl}/api/teams`, {
+    const response = await fetch(`${apiUrl}/teams`, {
       credentials: 'include',
       headers: { 'Accept': 'application/json', 'x-csrf-token': csrfToken }
     })
@@ -151,7 +151,7 @@ const createTeam = async () => {
   if (!newTeamName.value) return alert('Enter a team name')
   try {
     const apiUrl = import.meta.env.API_URL
-    const response = await fetch(`${apiUrl}/api/teams`, {
+    const response = await fetch(`${apiUrl}/teams`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -176,7 +176,7 @@ const addUserToTeam = async () => {
   if (!selectedTeamId.value || !selectedUserId.value) return alert('Select both a team and a user')
   try {
     const apiUrl = import.meta.env.API_URL
-    const response = await fetch(`${apiUrl}/api/teams/${selectedTeamId.value}/users`, {
+    const response = await fetch(`${apiUrl}/teams/${selectedTeamId.value}/users`, {
       method: 'POST',
       credentials: 'include',
       headers: {

@@ -47,7 +47,7 @@ const handleLogin = async () => {
   const apiUrl = import.meta.env.API_URL
 
   try {
-    const response = await fetch(`${apiUrl}/api/login`, {
+    const response = await fetch(`${apiUrl}/login`, {
       method: 'POST',
       credentials: 'include',
       headers: {

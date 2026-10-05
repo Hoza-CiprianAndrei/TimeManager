@@ -41,7 +41,7 @@ const handleRegister = async () => {
 
   const apiUrl = import.meta.env.API_URL
   try {
-    const response = await fetch(`${apiUrl}/api/users`, {
+    const response = await fetch(`${apiUrl}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
