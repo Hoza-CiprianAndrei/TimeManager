@@ -86,7 +86,7 @@ const selectedUserId = ref('')
 
 // Fetch all users
 const fetchUsers = async () => {
-  const apiUrl = import.meta.env.API_URL
+  const apiUrl = import.meta.env.VITE_API_URL
   try {
     const response = await fetch(`${apiUrl}/users`, {
       credentials: 'include',
@@ -108,7 +108,7 @@ const fetchUsers = async () => {
 // Send PUT request to promote or demote the user
 const updateUserRole = async (userId, newRoleId) => {
   try {
-    const apiUrl = import.meta.env.API_URL
+    const apiUrl = import.meta.env.VITE_API_URL
     const response = await fetch(`${apiUrl}/users/${userId}`, {
       method: 'PUT',
       credentials: 'include',
@@ -133,6 +133,7 @@ const updateUserRole = async (userId, newRoleId) => {
 // Fetch existing teams
 const fetchTeams = async () => {
   try {
+    const apiUrl = import.meta.env.VITE_API_URL
     const response = await fetch(`${apiUrl}/teams`, {
       credentials: 'include',
       headers: { 'Accept': 'application/json', 'x-csrf-token': csrfToken }
@@ -150,7 +151,7 @@ const fetchTeams = async () => {
 const createTeam = async () => {
   if (!newTeamName.value) return alert('Enter a team name')
   try {
-    const apiUrl = import.meta.env.API_URL
+    const apiUrl = import.meta.env.VITE_API_URL
     const response = await fetch(`${apiUrl}/teams`, {
       method: 'POST',
       credentials: 'include',
@@ -175,7 +176,7 @@ const createTeam = async () => {
 const addUserToTeam = async () => {
   if (!selectedTeamId.value || !selectedUserId.value) return alert('Select both a team and a user')
   try {
-    const apiUrl = import.meta.env.API_URL
+    const apiUrl = import.meta.env.VITE_API_URL
     const response = await fetch(`${apiUrl}/teams/${selectedTeamId.value}/users`, {
       method: 'POST',
       credentials: 'include',

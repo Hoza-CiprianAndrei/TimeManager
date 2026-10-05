@@ -32,7 +32,7 @@ const user = ref({
 })
 
 onMounted(async () => {
-  const apiUrl = import.meta.env.API_URL
+  const apiUrl = import.meta.env.VITE_API_URL
   const response = await fetch(`${apiUrl}/users/${userId}`, {
     credentials: 'include', 
     headers: {
@@ -48,7 +48,7 @@ onMounted(async () => {
 })
 
 const updateProfile = async () => {
-  const apiUrl = import.meta.env.API_URL
+  const apiUrl = import.meta.env.VITE_API_URL
   const response = await fetch(`${apiUrl}/users/${userId}`, {
     method: 'PUT',
     headers: {
@@ -67,7 +67,7 @@ const updateProfile = async () => {
 const deleteAccount = async () => {
   if (!confirm('Are you sure you want to delete your account? This cannot be undone.')) return
 
-  const apiUrl = import.meta.env.API_URL
+  const apiUrl = import.meta.env.VITE_API_URL
   const response = await fetch(`${apiUrl}/users/${userId}`, {
     method: 'DELETE',
     headers: {

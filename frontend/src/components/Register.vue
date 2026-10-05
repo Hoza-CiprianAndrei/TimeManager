@@ -39,7 +39,7 @@ const router = useRouter()
 const handleRegister = async () => {
   errorMessage.value = ''
 
-  const apiUrl = import.meta.env.API_URL
+  const apiUrl = import.meta.env.VITE_API_URL
   try {
     const response = await fetch(`${apiUrl}/users`, {
       method: 'POST',
