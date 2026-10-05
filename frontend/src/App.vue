@@ -33,7 +33,6 @@ const logout = () => {
       <nav class="nav-links">
         <!-- Links shown ONLY to logged-in users -->
         <template v-if="isAuthenticated">
-          <!-- Only Administrators can see the Dashboard/Admin panel -->
           <RouterLink v-if="userRole === 'Administrator'" to="/dashboard">Admin Dashboard</RouterLink>
           
           <RouterLink :to="'/clock/' + activeId">Clock Manager</RouterLink>
