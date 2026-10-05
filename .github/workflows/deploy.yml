@@ -42,7 +42,7 @@ jobs:
 
   deploy:
     name: Deploy to Azure VPS
-    needs: build-and-push
+    needs: build-and-push 
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout Repository
