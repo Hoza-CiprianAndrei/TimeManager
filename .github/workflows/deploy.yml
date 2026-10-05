@@ -40,7 +40,7 @@ jobs:
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
 
-  deploy:
+  deploy: 
     name: Deploy to Azure VPS
     needs: build-and-push 
     runs-on: ubuntu-latest
