@@ -32,8 +32,12 @@ const user = ref({
 })
 
 onMounted(async () => {
-  const response = await fetch(`http://localhost:4000/api/users/${userId}`, {
+  const apiUrl = import.meta.env.API_URL
+  const response = await fetch(`${apiUrl}/users/${userId}`, {
+    credentials: 'include', 
     headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'x-csrf-token': csrfToken
     }
   })
@@ -44,7 +48,8 @@ onMounted(async () => {
 })
 
 const updateProfile = async () => {
-  const response = await fetch(`http://localhost:4000/api/users/${userId}`, {
+  const apiUrl = import.meta.env.API_URL
+  const response = await fetch(`${apiUrl}/users/${userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -62,7 +67,8 @@ const updateProfile = async () => {
 const deleteAccount = async () => {
   if (!confirm('Are you sure you want to delete your account? This cannot be undone.')) return
 
-  const response = await fetch(`http://localhost:4000/api/users/${userId}`, {
+  const apiUrl = import.meta.env.API_URL
+  const response = await fetch(`${apiUrl}/users/${userId}`, {
     method: 'DELETE',
     headers: {
       'x-csrf-token': csrfToken

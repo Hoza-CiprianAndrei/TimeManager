@@ -2,10 +2,14 @@
 import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import router from '@/router'
+import { parse } from 'vue/compiler-sfc'
 
 const route = useRoute()
 const API_BASE = '/api'
 
+const user = ref(null)
+const userExists = ref(false)
 const startDateTime = ref(null)
 const clockin = ref(false)
 
@@ -94,7 +98,8 @@ function getActiveUserId()
   {
     try {
       const parsed = JSON.parse(savedUser)
-      return parsed.id
+      if (String(parsed.id) === String(fromRoute))
+        return parsed.id
     } catch (err)
     {
       return null
@@ -103,18 +108,52 @@ function getActiveUserId()
   return null
 }
 
+function resetState() {
+  user.value = null
+  userExists.value = false
+  clockin.value = false
+  startDateTime.value = null
+  stopLiveCounter()
+  elapsedTime.value = '00:00:00'
+}
+
 async function refresh()
 {
   const userID = getActiveUserId()
   
   if (!userID)
+  {
+    resetState()
+    showNotification('No user specified!', true)
+    setTimeout(() => {
+      router.push('/')
+    }, 1500)
     return
+  }
 
   loading.value = true
+  resetState()
   try
   {
-    const response = await axios.get(`${API_BASE}/clocks/${userID}`)
-    const clockData = response.data.data
+    const response = await axios.get(`${API_BASE}/users/${userID}`)
+    user.value = response.data.data || response.data
+    userExists.value = true
+  } catch (err) {
+    userExists.value = false
+    loading.value = false
+
+    if (err.response && err.response.status === 404)
+      showNotification(`User with ID #${userID} does not exist!`, true)
+    else //to do: error auth after user roles
+      showNotification('Failed to fetch user data', true)
+    
+    return
+  }
+
+  try {
+
+    const clock_response = await axios.get(`${API_BASE}/clocks/${userID}`)
+    const clockData = clock_response.data.data || clock_response.data
 
     if (clockData && clockData.status)
     {
@@ -131,7 +170,10 @@ async function refresh()
     }
   } catch (err)
   {
-    console.error('Error at refresh:', err)
+    clockin.value = false
+    startDateTime.value = null
+    stopLiveCounter()
+    elapsedTime.value = '00:00:00'
   } finally 
   {
     loading.value = false
@@ -141,7 +183,7 @@ async function refresh()
 async function clock()
 {
   const userID = getActiveUserId()
-  if (!userID)
+  if (!userID || !userExists.value)
   {
     showNotification('Error: There is no user with this ID', true)
     return
@@ -189,9 +231,8 @@ async function clock()
 
 watch(
   () => route.params.userID,
-  (newId) => {
-    if (newId)
-      refresh()
+  () => {
+    refresh()
   }
 )
 

@@ -44,8 +44,10 @@ const router = useRouter()
 const handleLogin = async () => {
   errorMessage.value = ''
 
+  const apiUrl = import.meta.env.API_URL
+
   try {
-    const response = await fetch('http://localhost:4000/api/login', {
+    const response = await fetch(`${apiUrl}/api/login`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -65,11 +67,17 @@ const handleLogin = async () => {
     const data = await response.json()
     
     localStorage.setItem('csrf_token', data.csrf_token)
+    const userRole = data.user.role_id || data.user.role
     localStorage.setItem('user_role', data.user.role)
     localStorage.setItem('user_id', data.user.id)
     localStorage.setItem('username', data.user.username)
 
-    router.push('/dashboard') 
+    sessionStorage.setItem('activeUser', JSON.stringify(data.user))
+    if (userRole === 1) {
+      router.push('/dashboard') 
+    } else {
+      router.push(`/clock/${data.user.id}`)
+    }
     
   } catch (error) {
     errorMessage.value = error.message

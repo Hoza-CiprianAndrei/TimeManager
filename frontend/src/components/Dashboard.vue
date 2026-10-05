@@ -86,8 +86,9 @@ const selectedUserId = ref('')
 
 // Fetch all users
 const fetchUsers = async () => {
+  const apiUrl = import.meta.env.API_URL
   try {
-    const response = await fetch('http://localhost:4000/api/users', {
+    const response = await fetch(`${apiUrl}/api/users`, {
       credentials: 'include',
       headers: {
         'Accept': 'application/json',
@@ -107,7 +108,8 @@ const fetchUsers = async () => {
 // Send PUT request to promote or demote the user
 const updateUserRole = async (userId, newRoleId) => {
   try {
-    const response = await fetch(`http://localhost:4000/api/users/${userId}`, {
+    const apiUrl = import.meta.env.API_URL
+    const response = await fetch(`${apiUrl}/api/users/${userId}`, {
       method: 'PUT',
       credentials: 'include',
       headers: {
@@ -131,7 +133,7 @@ const updateUserRole = async (userId, newRoleId) => {
 // Fetch existing teams
 const fetchTeams = async () => {
   try {
-    const response = await fetch('http://localhost:4000/api/teams', {
+    const response = await fetch(`${apiUrl}/api/teams`, {
       credentials: 'include',
       headers: { 'Accept': 'application/json', 'x-csrf-token': csrfToken }
     })
@@ -148,7 +150,8 @@ const fetchTeams = async () => {
 const createTeam = async () => {
   if (!newTeamName.value) return alert('Enter a team name')
   try {
-    const response = await fetch('http://localhost:4000/api/teams', {
+    const apiUrl = import.meta.env.API_URL
+    const response = await fetch(`${apiUrl}/api/teams`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -172,7 +175,8 @@ const createTeam = async () => {
 const addUserToTeam = async () => {
   if (!selectedTeamId.value || !selectedUserId.value) return alert('Select both a team and a user')
   try {
-    const response = await fetch(`http://localhost:4000/api/teams/${selectedTeamId.value}/users`, {
+    const apiUrl = import.meta.env.API_URL
+    const response = await fetch(`${apiUrl}/api/teams/${selectedTeamId.value}/users`, {
       method: 'POST',
       credentials: 'include',
       headers: {
