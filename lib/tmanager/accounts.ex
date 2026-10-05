@@ -36,7 +36,7 @@ defmodule Tmanager.Accounts do
 
   """
   def get_user!(id) do
-    endRepo.get!(User, id)
+    Repo.get!(User, id)
     |> Repo.preload(:teams)
   end
 
