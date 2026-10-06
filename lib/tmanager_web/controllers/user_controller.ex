@@ -11,6 +11,7 @@ defmodule TmanagerWeb.UserController do
             user ->
                 render(conn, :show, user: user)
         end
+    end
 
     def index(conn, _params) do
       users = Tmanager.Accounts.list_users()
