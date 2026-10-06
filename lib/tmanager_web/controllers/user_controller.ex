@@ -19,12 +19,10 @@ defmodule TmanagerWeb.UserController do
     end
 
     def show(conn, %{"userID" => id}) do
-        case Repo.get(User, id) do
-            nil ->
-                conn |> put_status(:not_found) |> json(%{error: "User not found"})
-            user ->
-                render(conn, :show, user: user)
-        end
+        user = 
+            Accounts.get_user!(id)
+            |> Tmanager.Repo.preload(:teams)
+        render(conn, :show, user: user)
     end
 
     def create(conn, %{"user" => user_params}) do
