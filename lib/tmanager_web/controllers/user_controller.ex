@@ -5,12 +5,10 @@ defmodule TmanagerWeb.UserController do
     alias Tmanager.Repo
 
     def index(conn, %{"email" => email, "username" => username}) do
-        case Repo.get_by(User, email: email, username: username) do
-            nil ->
-                conn |> put_status(:not_found) |> json(%{error: "User not found"})
-            user ->
-                render(conn, :show, user: user)
-        end
+        users = 
+            Tmanager.Accounts.list_users()
+            |> Tmanager.Repo.preload(:teams)
+        render(conn, :index, users: users)
     end
 
     def index(conn, _params) do
