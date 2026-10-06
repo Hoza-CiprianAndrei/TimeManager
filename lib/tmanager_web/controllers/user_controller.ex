@@ -20,7 +20,7 @@ defmodule TmanagerWeb.UserController do
 
     def show(conn, %{"userID" => id}) do
         user = 
-            Accounts.get_user!(id)
+            Tmanager.Accounts.get_user!(id)
             |> Tmanager.Repo.preload(:teams)
         render(conn, :show, user: user)
     end
