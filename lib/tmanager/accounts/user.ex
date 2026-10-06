@@ -22,6 +22,7 @@ defmodule Tmanager.Accounts.User do
     |> cast(attrs, [:username, :email, :password, :role_id])
     |> validate_required([:username, :email, :role_id])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+\.[^\s]+$/, message: "must have format X@X.X")
+    |> unique_constraint(:email, name: :users_email_index)
     |> default_role()
     |> validate_password_if_new()
     |> put_password_hash()

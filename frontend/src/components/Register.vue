@@ -18,7 +18,7 @@
         <input v-model="password" type="password" id="password" required />
       </div>
 
-      <button type="submit">Create Account</button>
+      <button type="submit" :disabled="isLoading">Create Account</button>
     </form>
 
     <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
