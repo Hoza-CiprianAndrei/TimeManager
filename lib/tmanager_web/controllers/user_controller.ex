@@ -30,7 +30,8 @@ defmodule TmanagerWeb.UserController do
 
         case Repo.insert(changeset) do
             {:ok, user} ->
-                conn |> put_status(:created) |> render(:show, user: user)
+                user_with_teams = Tmanager.Repo.preload(user, :teams)
+                conn |> put_status(:created) |> render(:show, user: user_with_teams)
             {:error, changeset} ->
                 conn |> put_status(:bad_request) |> json(%{errors: format_errors(changeset)})
         end
